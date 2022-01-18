@@ -46,6 +46,7 @@ ball1 = Ball()
 list = [
 	Ball(),
 	Ball(),
+	Ball(),
 	Ball()
 ]
 
