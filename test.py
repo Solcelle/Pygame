@@ -1,3 +1,4 @@
+from turtle import circle
 import pygame
 import random
 pygame.init()
@@ -10,20 +11,16 @@ screen = pygame.display.set_mode((SCREEN_X, SCREEN_Y), 0, 32)
 # Get images
 BG_FNAME = "puppies.jpg"
 BALL_FNAME = "ball.png"
-background = pygame.image.load(BG_FNAME)
+background = pygame.image.load(BG_FNAME).convert()
 ball_img = pygame.image.load(BALL_FNAME).convert_alpha()
 
 
-# Create ball
-class Ball:
+# Parent for moving objects
+class MovingObj():
 	def __init__(self):
 		self.x = 42
 		self.y = 200
 		self.speed = [200 + 400 * random.random(), 200 + 400 * random.random()]
-		self.img = ball_img
-		self.width = ball_img.get_width()
-		self.height = ball_img.get_height()
-
 
 	def move(self, time_passed):
 		self.x += self.speed[0] * time_passed
@@ -37,9 +34,34 @@ class Ball:
 			self.speed[1] = -abs(self.speed[1])
 		if self.y <= 0:
 			self.speed[1] = abs(self.speed[0])
+
+	def draw(self):
+		pass
+
+
+# Create ball
+class Ball(MovingObj):
+	def __init__(self):
+		super().__init__()
+		self.img = ball_img
+		self.width = ball_img.get_width()
+		self.height = ball_img.get_height()
 		
 	def draw(self):
 		screen.blit(self.img, (self.x, self.y))
+
+# Create circle
+class Circle(MovingObj):
+	def __init__(self):
+		super().__init__()
+		self.radius = 30
+		self.width = 30
+		self.height = 30
+		self.color = (200, 0, 100)
+
+	def draw(self):
+		pygame.draw.circle(screen, self.color, (round(self.x), round(self.y)), self.radius)
+
 
 ball1 = Ball()
 
@@ -47,7 +69,10 @@ list = [
 	Ball(),
 	Ball(),
 	Ball(),
-	Ball()
+	Ball(),
+	Circle(),
+	Circle(),
+	Circle(),
 ]
 
 clock = pygame.time.Clock()
@@ -57,6 +82,7 @@ while True:
 	events = pygame.event.get()
 	for event in events:
 		if event.type == pygame.QUIT:
+			pygame.quit()
 			exit()
 
 	time_passed = clock.tick(144) / 1000.0
