@@ -1,4 +1,3 @@
-from turtle import circle
 import pygame
 import random
 pygame.init()
