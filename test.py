@@ -62,9 +62,9 @@ class Circle(MovingObj):
 		pygame.draw.circle(screen, self.color, (round(self.x), round(self.y)), self.radius)
 
 
-ball1 = Ball()
+ball1 = Ball()	# Creates single object
 
-list = [
+list = [		# Creates multiple objectes
 	Ball(),
 	Ball(),
 	Ball(),
@@ -74,35 +74,37 @@ list = [
 	Circle(),
 ]
 
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()	# Creates game clock
 
 # Game loop
 while True:
-	events = pygame.event.get()
+	# Checks for events in program
+	events = pygame.event.get()			
 	for event in events:
-		if event.type == pygame.QUIT:
+		if event.type == pygame.QUIT:	# If quit event, end program
 			pygame.quit()
 			exit()
 
+	# Sets amount of ticks per second
 	time_passed = clock.tick(144) / 1000.0
 
 	# Draw backgound
 	screen.blit(background, (0, 0))
 
 
-	# Move ball
+	# Move single object
 	ball1.move(time_passed)
 
-	# Move balls
+	# Move multiple objects
 	for obj in list:
 		obj.move(time_passed)
 	
-	# Draw ball
+	# Draw single object
 	ball1.draw()
 
-	# Draw balls
+	# Draw multiple objects
 	for obj in list:
 		obj.draw()
 
-
+	# Update display to show new frame
 	pygame.display.update()
